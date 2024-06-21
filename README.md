@@ -14,7 +14,7 @@ ThiThis repository aims to develop alternative navigation solutions using radio 
 
 - D.H. Titterton and J.L. Weston (2004). Strapdown Inertial Navigation Technology (2nd Ed.). Institution of Engineering and Technology, USA.
 
-## Features
+## TODO
 - Design a Sensor Fusion PCB for testing.
 - C/C++ Implementation.
 - Test on the Drone all over system.
