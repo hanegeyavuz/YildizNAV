@@ -1,0 +1,811 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>vor_dme_mpu6000_deneme</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-05-25">
+<meta name="DC.source" content="vor_dme_mpu6000_deneme.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">deneme</a>
+</li>
+<li>
+<a href="#3">CODE EXECUTION PARAMETERS</a>
+</li>
+<li>
+<a href="#5">CONSTANTS</a>
+</li>
+<li>
+<a href="#7">TIME INTERVAL</a>
+</li>
+<li>
+<a href="#9">REFERENCE</a>
+</li>
+<li>
+<a href="#11">VOR-DME INIT</a>
+</li>
+<li>
+<a href="#13">DISTANCE CALCULATION(m)</a>
+</li>
+<li>
+<a href="#15">BEARING CALCULATION(Deg)</a>
+</li>
+<li>
+<a href="#17">VEHICLE POSITION CALCULATE</a>
+</li>
+<li>
+<a href="#19">DEG TO RAD CONVERSIONS</a>
+</li>
+<li>
+<a href="#21">IMU ERROR PROFILE</a>
+</li>
+<li>
+<a href="#23">VOR/DME ERROR PROFILE</a>
+</li>
+<li>
+<a href="#25">NAVIGATION TIME</a>
+</li>
+<li>
+<a href="#27">TRAVELED DISTANCE</a>
+</li>
+<li>
+<a href="#29">INS/VOR/DME INTEGRATION</a>
+</li>
+<li>
+<a href="#31">INTERPOLATION OF INS/VOR/DME DATASET</a>
+</li>
+<li>
+<a href="#33">NAVIGATION RMSE</a>
+</li>
+<li>
+<a href="#35">PLOTS</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="comment">%   This MATLAB code simulates the YildizNav system, which integrates an</span>
+<span class="comment">%   inertial navigation system (INS) with a VOR/DME system.</span>
+<span class="comment">%   INS data is collected from inertial measurement unit (IMU)</span>
+<span class="comment">%   sensors, Very high frequency omni-directional range / distance measuring</span>
+<span class="comment">%   equipment (VOR/DME) data is simulated based on GNSS measurements.</span>
+
+<span class="comment">%   Authors: MUHAMMED YAVUZ HANEGE, MEHMET EMRE EYVAZ, KEREM VATANSEVER</span>
+<span class="comment">%</span>
+<span class="comment">%   This project is inspired by the "NaveGo" INS/GNSS project.</span>
+<span class="comment">%</span>
+<span class="comment">%   Specially thanks to our academic advisor, Dr. "BAHADIR &Ccedil;ATALBAŞ".</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%   Copyright (C) 2014, Rodrigo Gonzalez, all rights reserved.</span>
+<span class="comment">%</span>
+<span class="comment">%   This file is part of YildizNav, an open-source MATLAB toolbox for</span>
+<span class="comment">%   simulation of integrated navigation systems.</span>
+<span class="comment">%</span>
+<span class="comment">%   YildizNav is free software: you can redistribute it and/or modify</span>
+<span class="comment">%   it under the terms of the GNU Lesser General Public License (LGPL)</span>
+<span class="comment">%   version 3 as published by the Free Software Foundation.</span>
+<span class="comment">%</span>
+<span class="comment">%   This program is distributed in the hope that it will be useful,</span>
+<span class="comment">%   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="comment">%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="comment">%   GNU Lesser General Public License for more details.</span>
+<span class="comment">%</span>
+<span class="comment">%   You should have received a copy of the GNU Lesser General Public</span>
+<span class="comment">%   License along with this program. If not, see</span>
+<span class="comment">%   &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%   Modifications by Yavuz Hanege &lt;hanegeyavuz@gmail.com&gt;</span>
+<span class="comment">%   Modifications by Mehmet Emre Eyvaz &lt;mehmetemre.eyvaz@gmail.com&gt;</span>
+<span class="comment">%   Modifications by Kerem Vatansever &lt;keremvatansver@gmail.com&gt;</span>
+<span class="comment">%   Date: 05.2024</span>
+
+
+clc; <span class="comment">% Clear command window</span>
+clear; <span class="comment">% Clear workspace</span>
+close <span class="string">all</span>; <span class="comment">% Close all figure windows</span>
+matlabrc; <span class="comment">% Reload MATLAB startup options</span>
+format <span class="string">long</span>; <span class="comment">% Set double-precision format</span>
+
+<span class="comment">% Paths to YildizNav functions</span>
+addpath <span class="string">C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\ins</span>
+addpath <span class="string">C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\ins-gnss</span>
+addpath <span class="string">C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\conversions</span>
+addpath <span class="string">C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\performance-analysis</span>
+addpath <span class="string">C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\plot</span>
+addpath <span class="string">C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\allan-variance</span>
+addpath <span class="string">C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\Radio-Navigation</span>
+</pre>
+<h2 id="2">deneme</h2>
+<pre class="codeinput">
+<span class="comment">% rtk</span>
+
+fprintf(<span class="string">'Yildiz_NAV: loading reference data... \n'</span>)
+
+load <span class="string">ref</span>
+
+<span class="comment">%imu</span>
+
+fprintf(<span class="string">'Yildiz_NAV: loading MPU-6000 IMU data... \n'</span>)
+
+load <span class="string">mpu6000_imu</span>
+
+<span class="comment">%gnss</span>
+
+fprintf(<span class="string">'Yildiz_NAV: loading Ekinox GNSS data... \n'</span>)
+
+load <span class="string">ekinox_gnss</span>
+</pre>
+<pre class="codeoutput">Yildiz_NAV: loading reference data... 
+Yildiz_NAV: loading MPU-6000 IMU data... 
+Yildiz_NAV: loading Ekinox GNSS data... 
+</pre>
+<h2 id="3">CODE EXECUTION PARAMETERS</h2>
+<pre class="codeinput">INS_VOR_DME    = <span class="string">'ON'</span>;
+PLOT        = <span class="string">'ON'</span>;
+
+<span class="comment">% Check if variables exist, otherwise set default values</span>
+<span class="keyword">if</span> (~exist(<span class="string">'INS_VOR_DME'</span>, <span class="string">'var'</span>))
+    INS_VOR_DME = <span class="string">'OFF'</span>;
+<span class="keyword">end</span>
+<span class="keyword">if</span> (~exist(<span class="string">'PLOT'</span>, <span class="string">'var'</span>))
+    PLOT = <span class="string">'OFF'</span>;
+<span class="keyword">end</span>
+</pre>
+<h2 id="5">CONSTANTS</h2>
+<pre class="codeinput">G =  9.80665;       <span class="comment">% Gravity constant, m/s^2</span>
+D2R = (pi/180);     <span class="comment">% Degrees to radians</span>
+R2D = (180/pi);     <span class="comment">% Radians to degrees</span>
+G2T = 1E-4;         <span class="comment">% Gauss to Tesla</span>
+normalize_angle = @(angle) mod(angle + 360, 720) - 360; <span class="comment">% Normalize Function</span>
+</pre>
+<h2 id="7">TIME INTERVAL</h2>
+<pre class="codeinput">tmin = 0;     <span class="comment">% VOR/DME first time</span>
+tmax = 400 ;   <span class="comment">% VOR/DME last time</span>
+</pre>
+<h2 id="9">REFERENCE</h2>
+<p>load ref_zedf9p.mat ref_data = struct2table(ref_data);</p>
+<p>% ref data structure ref.lat = ref_data.Latitude; ref.lon = ref_data.Longitude; ref.t = double(ref_data.Time); ref.h = ref_data.Altitude; % Serveral fields are missing: roll, pitch, yaw,vel etc.</p>
+<p>%% IMU DATA %%</p>
+<p>load imu_xsense_delivers.mat imu_data = struct2table(imu_data);</p>
+<p>% IMU data structure imu.t = double(imu_data.Time); imu.fb = [imu_data.Ax imu_data.Ay imu_data.Az ] ; imu.wb = [imu_data.Gx imu_data.Gy imu_data.Gz ] ;</p>
+<p>% IMU frequency imu.freq = get_freq(imu.t);</p>
+<p>%% IMU RAW ORIENTATION %%</p>
+<p>fs = 100; decim = 1; % IMU frequency % imu.freq = get_freq(imu.t);</p>
+<p>fuse = imufilter('SampleRate',fs,'DecimationFactor',decim); q = fuse(imu.fb,imu.wb); [yaw_gyro, pitch_gyro, roll_gyro] = quat2angle(q);</p>
+<p>time = (0:decim:size(imu.fb,1)-1)/fs;</p>
+<p>%% GNSS DATA %%</p>
+<p>load zedf9p_gnss_delivers.mat load gnss_vel_data_delivers.mat</p>
+<p>gnss_data = struct2table(gnss_data); gnss_vel_data = struct2table(gnss_vel_data);</p>
+<p>% GNSS data structure gnss.t = double(gnss_data.Time); gnss.lat = gnss_data.Latitude; gnss.lon = gnss_data.Longitude; gnss.h = double(gnss_data.Altitude); gnss.vel = [ gnss_vel_data.Velx gnss_vel_data.Vely gnss_vel_data.Velz] ;</p>
+<p>% GNSS frequency gnss.freq = get_freq(gnss.t);</p>
+<pre class="codeinput">ekinox_gnss.larm = [-0.369, 0.0, -0.219]';
+
+ekinox_gnss.eps = mean(diff(mpu6000_imu.t)) / 2; <span class="comment">%  A rule of thumb for choosing eps.</span>
+
+gnss = ekinox_gnss;
+imu = mpu6000_imu;
+</pre>
+<h2 id="11">VOR-DME INIT</h2>
+<pre class="codeinput">stat.lat = 	44.925400;
+stat.lon = 7.861660;
+vor_dme.h = double(gnss.h);
+<span class="comment">% VOR/DME Velocity Calculation is not effective when using simulated data</span>
+vor_dme.vel = gnss.vel ;
+vor_dme.t = gnss.t;
+</pre>
+<h2 id="13">DISTANCE CALCULATION(m)</h2>
+<p>Distance data from DME station</p>
+<pre class="codeinput">vor_dme.distance = dme_dist(gnss,stat);
+</pre>
+<h2 id="15">BEARING CALCULATION(Deg)</h2>
+<p>Bearing data from VOR Station</p>
+<pre class="codeinput">vor_dme.bearing = vor_bearing(gnss,stat);
+</pre>
+<h2 id="17">VEHICLE POSITION CALCULATE</h2>
+<p>Combining VOR and DME systems</p>
+<pre class="codeinput">[vor_dme.lat, vor_dme.lon] = radio_navigation_position(vor_dme,stat);
+</pre>
+<h2 id="19">DEG TO RAD CONVERSIONS</h2>
+<pre class="codeinput">
+<span class="comment">% ref.lat = ref.lat * D2R;</span>
+<span class="comment">% ref.lon = ref.lon * D2R;</span>
+<span class="comment">%</span>
+<span class="comment">% gnss.lat = gnss.lat * D2R;</span>
+<span class="comment">% gnss.lon = gnss.lon * D2R;</span>
+<span class="comment">%</span>
+<span class="comment">% vor_dme.lat = vor_dme.lat * D2R;</span>
+<span class="comment">% vor_dme.lon = vor_dme.lon * D2R;</span>
+</pre>
+<h2 id="21">IMU ERROR PROFILE</h2>
+<p>Error profile from Allan variance</p>
+<pre class="codeinput">
+<span class="comment">% Apply to system just one time for taking error profile</span>
+
+<span class="comment">% imu_allan = allan_imu(imu);</span>
+<span class="comment">%</span>
+<span class="comment">% imu.ini_align = [ -9.9864e-05 0.0103 0.2256 ];</span>
+<span class="comment">% imu.ini_align_err = [0.5 0.5 1.5] * D2R;</span>
+<span class="comment">% imu.vrw = [0.357052112936883,0.961774519858292,0.097937677583613];</span>
+<span class="comment">% imu.arw = [0.042121868141229,0.009525679451282,0.215964553168146];</span>
+<span class="comment">% imu.vrrw = [4.690958161815616,0.025017042332123,8.151900100864590];</span>
+<span class="comment">% imu.arrw = [0.365296716563698,0.652790283467330,0.332242479057422];</span>
+<span class="comment">% imu.ab_dyn = [0.317843621047626,0.269877573663284,0.043008085334205];</span>
+<span class="comment">% imu.gb_dyn = [0.119085569975979,0.183160823036258,0.119983749586203];</span>
+<span class="comment">% imu.ab_corr = [8.658268346330733,1.489702059588082,14.137172565486901];</span>
+<span class="comment">% imu.gb_corr = [0.209958008398320,0.129974005198960,4.809038192361528];</span>
+<span class="comment">% imu.ab_psd = [0.935252807786899,0.329394623420481,0.161707956271642];</span>
+<span class="comment">% imu.gb_psd = [0.054566407491244,0.066032970944379,0.263118595909555];</span>
+<span class="comment">% imu.ab_sta = [0 0 0];%[70e-06 70e-06 70e-06];</span>
+<span class="comment">% imu.gb_sta = [0 0 0];%[0.00166667 0.00166667 0.00166667];</span>
+</pre>
+<h2 id="23">VOR/DME ERROR PROFILE</h2>
+<pre class="codeinput">vor_dme.stdm = gnss.stdm; <span class="comment">% Standart Deviation Position Error</span>
+vor_dme.stdv = gnss.stdv; <span class="comment">%ones(1,3) .* 0.1 ; % Standart Deviation Velocity Error</span>
+vor_dme.zupt_th  = gnss.zupt_th;<span class="comment">%0.1;       % ZUPT threshold (m/s).</span>
+vor_dme.zupt_win = gnss.zupt_win;<span class="comment">%2;         % ZUPT time window (seconds)</span>
+vor_dme.eps = mean(diff(imu.t)) / 2;  <span class="comment">% Time Interval</span>
+vor_dme = gnss_m2r(vor_dme.lat(1), vor_dme.h(1), vor_dme);
+vor_dme.larm = gnss.larm;<span class="comment">%[0 0.03974 0.00851]'; % Same Larm with GNSS</span>
+</pre>
+<h2 id="25">NAVIGATION TIME</h2>
+<pre class="codeinput">to = (gnss.t(end) - gnss.t(1));
+
+fprintf(<span class="string">'YildizNav: navigation time is %.2f minutes or %.2f seconds. \n'</span>, (to/60), to)
+</pre>
+<pre class="codeoutput">YildizNav: navigation time is 20.98 minutes or 1258.80 seconds. 
+</pre>
+<h2 id="27">TRAVELED DISTANCE</h2>
+<pre class="codeinput">distance = gnss_distance (gnss.lat, gnss.lon);
+
+fprintf(<span class="string">'YildizNav: distance traveled by the vehicle is %.2f meters or %.2f km. \n'</span>, distance, distance/1000)
+</pre>
+<pre class="codeoutput">YildizNav: distance traveled by the vehicle is 6065.14 meters or 6.07 km. 
+</pre>
+<h2 id="29">INS/VOR/DME INTEGRATION</h2>
+<pre class="codeinput">
+<span class="keyword">if</span> strcmp(INS_VOR_DME, <span class="string">'ON'</span>)
+
+    <span class="comment">% Execute INS/VOR/DME integration</span>
+    <span class="comment">%     ---------------------------------------------------------------------</span>
+    fprintf(<span class="string">'YildizNav: INS/VOR/DME integration... \n'</span>)
+    yildiz_nav = ins_vor_dme(imu, vor_dme, <span class="string">'quaternion'</span>);
+    <span class="comment">% ---------------------------------------------------------------------</span>
+
+    save <span class="string">yildiz_nav</span> <span class="string">yildiz_nav</span>
+<span class="keyword">else</span>
+
+    load <span class="string">yildiz_nav</span>
+<span class="keyword">end</span>
+
+
+<span class="comment">% Referance Orientation is not provided by RTK. Equations for init</span>
+<span class="comment">% orientation of ref structure.</span>
+<span class="comment">%</span>
+<span class="comment">% ref.yaw = yildiz_nav.yaw;</span>
+<span class="comment">% ref.roll = yildiz_nav.roll;</span>
+<span class="comment">% ref.pitch = yildiz_nav.pitch;</span>
+</pre>
+<pre class="codeoutput">YildizNav: INS/VOR/DME integration... 
+. . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . 
+</pre>
+<h2 id="31">INTERPOLATION OF INS/VOR/DME DATASET</h2>
+<pre class="codeinput">
+<span class="comment">% INS/VOR/DME estimates and GNSS data are interpolated according to the</span>
+<span class="comment">% reference dataset.</span>
+
+[nav_i,  ref_n] = navego_interpolation (yildiz_nav, ref);
+[gnss_i, ref_g] = navego_interpolation (gnss, ref);
+</pre>
+<pre class="codeoutput">navego_interpolation: adjusting first element of ref ... 
+navego_interpolation: nearest method to interpolate INS/GNSS solution
+navego_interpolation: adjusting first element of ref ... 
+navego_interpolation: adjusting last element of ref... 
+navego_interpolation: nearest method to interpolate GNSS-only solution
+</pre>
+<h2 id="33">NAVIGATION RMSE</h2>
+<p>RMS Calculation</p>
+<pre class="codeinput">rmse_v = print_rmse (nav_i, gnss_i, ref_n, ref_g, <span class="string">'Inertial Sense INS/VOR/DME'</span>);
+</pre>
+<pre class="codeoutput">
+print_rmse: RMSE for Inertial Sense INS/VOR/DME
+
+ Vel. N, Inertial Sense INS/VOR/DME = 1.7301e-01 m/s, GNSS = 5.8376e-03 m/s 
+ Vel. E, Inertial Sense INS/VOR/DME = 1.2503e-01 m/s, GNSS = 5.0268e-03 m/s 
+ Vel. D, Inertial Sense INS/VOR/DME = 1.0482e-01 m/s, GNSS = 6.6836e-03 m/s 
+
+ Latitude,  Inertial Sense INS/VOR/DME = 9.2757e+01 m, GNSS = 1.0619e+00 m 
+ Longitude, Inertial Sense INS/VOR/DME = 6.2559e+01 m, GNSS = 1.0631e+00 m 
+ Altitude,  Inertial Sense INS/VOR/DME = 2.5698e+00 m, GNSS = 3.0448e+00 m 
+</pre>
+<h2 id="35">PLOTS</h2>
+<pre class="codeinput">
+<span class="keyword">if</span> (strcmp(PLOT,<span class="string">'ON'</span>))
+
+    <span class="comment">% Main Plot Sequence</span>
+    plot_main (ref, gnss, yildiz_nav, gnss_i, nav_i, ref_g, ref_n);
+
+    <span class="comment">% % Plot for compare gyro and INS/VOR/DME Outputs</span>
+    <span class="comment">% roll_nav = R2D .* (yildiz_nav.roll);</span>
+    <span class="comment">% pitch_nav = R2D .*(yildiz_nav.pitch);</span>
+    <span class="comment">% yaw_nav = R2D .*(yildiz_nav.yaw);</span>
+    <span class="comment">%</span>
+    <span class="comment">% roll_gyro = R2D .*(roll_gyro);</span>
+    <span class="comment">% pitch_gyro = R2D .*(pitch_gyro);</span>
+    <span class="comment">% yaw_gyro = R2D .*(yaw_gyro);</span>
+    <span class="comment">%</span>
+    <span class="comment">%</span>
+    <span class="comment">% % Raw imu sensor orientation</span>
+    <span class="comment">% figure;</span>
+    <span class="comment">% plot(time,[yaw_gyro,pitch_gyro,roll_gyro])</span>
+    <span class="comment">% title('Raw IMU Orientation Estimate')</span>
+    <span class="comment">% legend('Z-axis', 'Y-axis', 'X-axis')</span>
+    <span class="comment">% xlabel('Time (s)')</span>
+    <span class="comment">% ylabel('Rotation (Deg)')</span>
+    <span class="comment">%</span>
+    <span class="comment">%</span>
+    <span class="comment">% % Comparison Sequence</span>
+    <span class="comment">% figure;</span>
+    <span class="comment">% subplot(3,1,1);</span>
+    <span class="comment">% plot(time, roll_nav, 'b', time, roll_gyro, 'r');</span>
+    <span class="comment">% xlabel('Time (s)');</span>
+    <span class="comment">% ylabel('Roll (Deg)');</span>
+    <span class="comment">% legend('INS/GNSS', 'Gyro');</span>
+    <span class="comment">% title('Roll');</span>
+    <span class="comment">%</span>
+    <span class="comment">% subplot(3,1,2);</span>
+    <span class="comment">% plot(time, pitch_nav, 'b', time, pitch_gyro, 'r');</span>
+    <span class="comment">% xlabel('Time (s)');</span>
+    <span class="comment">% ylabel('Pitch (Rad)');</span>
+    <span class="comment">% legend('INS/GNSS', 'Gyro');</span>
+    <span class="comment">% title('Pitch');</span>
+    <span class="comment">%</span>
+    <span class="comment">% subplot(3,1,3);</span>
+    <span class="comment">% plot(time, yaw_nav, 'b', time, yaw_gyro, 'r');</span>
+    <span class="comment">% xlabel('Time (s)');</span>
+    <span class="comment">% ylabel('Yaw (Deg)');</span>
+    <span class="comment">% legend('INS/GNSS', 'Gyro');</span>
+    <span class="comment">% title('Yaw');</span>
+<span class="keyword">end</span>
+</pre>
+<img vspace="5" hspace="5" src="vor_dme_mpu6000_deneme_01.png" alt=""> <img vspace="5" hspace="5" src="vor_dme_mpu6000_deneme_02.png" alt=""> <img vspace="5" hspace="5" src="vor_dme_mpu6000_deneme_03.png" alt=""> <img vspace="5" hspace="5" src="vor_dme_mpu6000_deneme_04.png" alt=""> <img vspace="5" hspace="5" src="vor_dme_mpu6000_deneme_05.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%   This MATLAB code simulates the YildizNav system, which integrates an
+%   inertial navigation system (INS) with a VOR/DME system.
+%   INS data is collected from inertial measurement unit (IMU)
+%   sensors, Very high frequency omni-directional range / distance measuring
+%   equipment (VOR/DME) data is simulated based on GNSS measurements.
+
+%   Authors: MUHAMMED YAVUZ HANEGE, MEHMET EMRE EYVAZ, KEREM VATANSEVER
+%
+%   This project is inspired by the "NaveGo" INS/GNSS project.
+%
+%   Specially thanks to our academic advisor, Dr. "BAHADIR ÇATALBAŞ".
+%
+%
+%
+%   Copyright (C) 2014, Rodrigo Gonzalez, all rights reserved.
+%
+%   This file is part of YildizNav, an open-source MATLAB toolbox for
+%   simulation of integrated navigation systems.
+%
+%   YildizNav is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU Lesser General Public License (LGPL)
+%   version 3 as published by the Free Software Foundation.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU Lesser General Public License for more details.
+%
+%   You should have received a copy of the GNU Lesser General Public
+%   License along with this program. If not, see
+%   <http://www.gnu.org/licenses/>.
+%
+%
+%   Modifications by Yavuz Hanege <hanegeyavuz@gmail.com>
+%   Modifications by Mehmet Emre Eyvaz <mehmetemre.eyvaz@gmail.com>
+%   Modifications by Kerem Vatansever <keremvatansver@gmail.com>
+%   Date: 05.2024
+
+
+clc; % Clear command window
+clear; % Clear workspace
+close all; % Close all figure windows
+matlabrc; % Reload MATLAB startup options
+format long; % Set double-precision format
+
+% Paths to YildizNav functions
+addpath C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\ins
+addpath C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\ins-gnss
+addpath C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\conversions
+addpath C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\performance-analysis
+addpath C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\plot
+addpath C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\allan-variance
+addpath C:\Users\yhane\Desktop\Yildiz_Localization_INS_GNSS\Radio-Navigation
+
+
+
+%% deneme
+
+% rtk
+
+fprintf('Yildiz_NAV: loading reference data... \n')
+
+load ref
+
+%imu
+
+fprintf('Yildiz_NAV: loading MPU-6000 IMU data... \n')
+
+load mpu6000_imu
+
+%gnss
+
+fprintf('Yildiz_NAV: loading Ekinox GNSS data... \n')
+
+load ekinox_gnss
+
+
+
+%% CODE EXECUTION PARAMETERS
+%%
+
+INS_VOR_DME    = 'ON';
+PLOT        = 'ON';
+
+% Check if variables exist, otherwise set default values
+if (~exist('INS_VOR_DME', 'var'))
+    INS_VOR_DME = 'OFF';
+end
+if (~exist('PLOT', 'var'))
+    PLOT = 'OFF';
+end
+
+
+%% CONSTANTS
+%%
+G =  9.80665;       % Gravity constant, m/s^2
+D2R = (pi/180);     % Degrees to radians
+R2D = (180/pi);     % Radians to degrees
+G2T = 1E-4;         % Gauss to Tesla
+normalize_angle = @(angle) mod(angle + 360, 720) - 360; % Normalize Function
+
+%% TIME INTERVAL
+%%
+tmin = 0;     % VOR/DME first time
+tmax = 400 ;   % VOR/DME last time
+
+%% REFERENCE
+%%
+% load ref_zedf9p.mat
+% ref_data = struct2table(ref_data);
+% 
+% % ref data structure
+% ref.lat = ref_data.Latitude;
+% ref.lon = ref_data.Longitude;
+% ref.t = double(ref_data.Time);
+% ref.h = ref_data.Altitude;
+% % Serveral fields are missing: roll, pitch, yaw,vel etc.
+% 
+% %% IMU DATA
+% %%
+% 
+% load imu_xsense_delivers.mat
+% imu_data = struct2table(imu_data);
+% 
+% % IMU data structure
+% imu.t = double(imu_data.Time);
+% imu.fb = [imu_data.Ax imu_data.Ay imu_data.Az ] ;
+% imu.wb = [imu_data.Gx imu_data.Gy imu_data.Gz ] ;
+% 
+% 
+% % IMU frequency
+% imu.freq = get_freq(imu.t);
+% 
+% 
+% %% IMU RAW ORIENTATION
+% %%
+% 
+% fs = 100;
+% decim = 1;
+% % IMU frequency
+% % imu.freq = get_freq(imu.t);
+% 
+% fuse = imufilter('SampleRate',fs,'DecimationFactor',decim);
+% q = fuse(imu.fb,imu.wb);
+% [yaw_gyro, pitch_gyro, roll_gyro] = quat2angle(q);
+% 
+% time = (0:decim:size(imu.fb,1)-1)/fs;
+% 
+% %% GNSS DATA
+% %%
+% 
+% load zedf9p_gnss_delivers.mat
+% load gnss_vel_data_delivers.mat
+% 
+% gnss_data = struct2table(gnss_data);
+% gnss_vel_data = struct2table(gnss_vel_data);
+% 
+% 
+% % GNSS data structure
+% gnss.t = double(gnss_data.Time);
+% gnss.lat = gnss_data.Latitude;
+% gnss.lon = gnss_data.Longitude;
+% gnss.h = double(gnss_data.Altitude);
+% gnss.vel = [ gnss_vel_data.Velx gnss_vel_data.Vely gnss_vel_data.Velz] ;
+% 
+% % GNSS frequency
+% gnss.freq = get_freq(gnss.t);
+
+ekinox_gnss.larm = [-0.369, 0.0, -0.219]'; 
+
+ekinox_gnss.eps = mean(diff(mpu6000_imu.t)) / 2; %  A rule of thumb for choosing eps.
+
+gnss = ekinox_gnss;
+imu = mpu6000_imu;
+
+%% VOR-DME INIT
+%%
+
+stat.lat = 	44.925400;
+stat.lon = 7.861660;
+vor_dme.h = double(gnss.h);
+% VOR/DME Velocity Calculation is not effective when using simulated data
+vor_dme.vel = gnss.vel ;
+vor_dme.t = gnss.t;
+
+
+%% DISTANCE CALCULATION(m)
+%%
+% Distance data from DME station
+vor_dme.distance = dme_dist(gnss,stat);
+
+%% BEARING CALCULATION(Deg)
+%%
+% Bearing data from VOR Station
+vor_dme.bearing = vor_bearing(gnss,stat);
+
+%% VEHICLE POSITION CALCULATE
+%%
+% Combining VOR and DME systems
+[vor_dme.lat, vor_dme.lon] = radio_navigation_position(vor_dme,stat);
+
+
+%% DEG TO RAD CONVERSIONS
+%%
+
+% ref.lat = ref.lat * D2R;
+% ref.lon = ref.lon * D2R;
+% 
+% gnss.lat = gnss.lat * D2R;
+% gnss.lon = gnss.lon * D2R;
+% 
+% vor_dme.lat = vor_dme.lat * D2R;
+% vor_dme.lon = vor_dme.lon * D2R;
+
+
+%% IMU ERROR PROFILE
+%%
+% Error profile from Allan variance
+
+% Apply to system just one time for taking error profile
+
+% imu_allan = allan_imu(imu);
+%
+% imu.ini_align = [ -9.9864e-05 0.0103 0.2256 ];
+% imu.ini_align_err = [0.5 0.5 1.5] * D2R;
+% imu.vrw = [0.357052112936883,0.961774519858292,0.097937677583613];
+% imu.arw = [0.042121868141229,0.009525679451282,0.215964553168146];
+% imu.vrrw = [4.690958161815616,0.025017042332123,8.151900100864590];
+% imu.arrw = [0.365296716563698,0.652790283467330,0.332242479057422];
+% imu.ab_dyn = [0.317843621047626,0.269877573663284,0.043008085334205];
+% imu.gb_dyn = [0.119085569975979,0.183160823036258,0.119983749586203];
+% imu.ab_corr = [8.658268346330733,1.489702059588082,14.137172565486901];
+% imu.gb_corr = [0.209958008398320,0.129974005198960,4.809038192361528];
+% imu.ab_psd = [0.935252807786899,0.329394623420481,0.161707956271642];
+% imu.gb_psd = [0.054566407491244,0.066032970944379,0.263118595909555];
+% imu.ab_sta = [0 0 0];%[70e-06 70e-06 70e-06];
+% imu.gb_sta = [0 0 0];%[0.00166667 0.00166667 0.00166667];
+
+%% VOR/DME ERROR PROFILE
+%%
+vor_dme.stdm = gnss.stdm; % Standart Deviation Position Error
+vor_dme.stdv = gnss.stdv; %ones(1,3) .* 0.1 ; % Standart Deviation Velocity Error
+vor_dme.zupt_th  = gnss.zupt_th;%0.1;       % ZUPT threshold (m/s).
+vor_dme.zupt_win = gnss.zupt_win;%2;         % ZUPT time window (seconds)
+vor_dme.eps = mean(diff(imu.t)) / 2;  % Time Interval
+vor_dme = gnss_m2r(vor_dme.lat(1), vor_dme.h(1), vor_dme);
+vor_dme.larm = gnss.larm;%[0 0.03974 0.00851]'; % Same Larm with GNSS
+
+%% NAVIGATION TIME
+%%
+to = (gnss.t(end) - gnss.t(1));
+
+fprintf('YildizNav: navigation time is %.2f minutes or %.2f seconds. \n', (to/60), to)
+
+%% TRAVELED DISTANCE
+%%
+distance = gnss_distance (gnss.lat, gnss.lon);
+
+fprintf('YildizNav: distance traveled by the vehicle is %.2f meters or %.2f km. \n', distance, distance/1000)
+
+%% INS/VOR/DME INTEGRATION
+%%
+
+if strcmp(INS_VOR_DME, 'ON')
+
+    % Execute INS/VOR/DME integration
+    %     REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+    fprintf('YildizNav: INS/VOR/DME integration... \n')
+    yildiz_nav = ins_vor_dme(imu, vor_dme, 'quaternion');
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+
+    save yildiz_nav yildiz_nav
+else
+
+    load yildiz_nav
+end
+
+
+% Referance Orientation is not provided by RTK. Equations for init
+% orientation of ref structure.
+% 
+% ref.yaw = yildiz_nav.yaw;
+% ref.roll = yildiz_nav.roll;
+% ref.pitch = yildiz_nav.pitch;
+
+%% INTERPOLATION OF INS/VOR/DME DATASET
+%%
+
+% INS/VOR/DME estimates and GNSS data are interpolated according to the
+% reference dataset.
+
+[nav_i,  ref_n] = navego_interpolation (yildiz_nav, ref);
+[gnss_i, ref_g] = navego_interpolation (gnss, ref);
+
+%% NAVIGATION RMSE
+%%
+% RMS Calculation
+
+rmse_v = print_rmse (nav_i, gnss_i, ref_n, ref_g, 'Inertial Sense INS/VOR/DME');
+
+%% PLOTS
+%%
+
+if (strcmp(PLOT,'ON'))
+
+    % Main Plot Sequence
+    plot_main (ref, gnss, yildiz_nav, gnss_i, nav_i, ref_g, ref_n);
+
+    % % Plot for compare gyro and INS/VOR/DME Outputs
+    % roll_nav = R2D .* (yildiz_nav.roll);
+    % pitch_nav = R2D .*(yildiz_nav.pitch);
+    % yaw_nav = R2D .*(yildiz_nav.yaw);
+    % 
+    % roll_gyro = R2D .*(roll_gyro);
+    % pitch_gyro = R2D .*(pitch_gyro);
+    % yaw_gyro = R2D .*(yaw_gyro);
+    % 
+    % 
+    % % Raw imu sensor orientation
+    % figure;
+    % plot(time,[yaw_gyro,pitch_gyro,roll_gyro])
+    % title('Raw IMU Orientation Estimate')
+    % legend('Z-axis', 'Y-axis', 'X-axis')
+    % xlabel('Time (s)')
+    % ylabel('Rotation (Deg)')
+    % 
+    % 
+    % % Comparison Sequence
+    % figure;
+    % subplot(3,1,1);
+    % plot(time, roll_nav, 'b', time, roll_gyro, 'r');
+    % xlabel('Time (s)');
+    % ylabel('Roll (Deg)');
+    % legend('INS/GNSS', 'Gyro');
+    % title('Roll');
+    % 
+    % subplot(3,1,2);
+    % plot(time, pitch_nav, 'b', time, pitch_gyro, 'r');
+    % xlabel('Time (s)');
+    % ylabel('Pitch (Rad)');
+    % legend('INS/GNSS', 'Gyro');
+    % title('Pitch');
+    % 
+    % subplot(3,1,3);
+    % plot(time, yaw_nav, 'b', time, yaw_gyro, 'r');
+    % xlabel('Time (s)');
+    % ylabel('Yaw (Deg)');
+    % legend('INS/GNSS', 'Gyro');
+    % title('Yaw');
+end
+
+
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>
